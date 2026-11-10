@@ -1,3 +1,28 @@
+import time
+import math
+import sys
+import numpy as np
+
+rng = np.random.default_rng(42)
+
+
+def measure(fn, arr, repeat=3):
+    best = float("inf")
+    result = None
+    for _ in range(repeat):
+        t0 = time.perf_counter()
+        result = fn(arr)
+        t1 = time.perf_counter()
+        best = min(best, t1 - t0)
+    return result, best
+
+
+def show(t_loop, t_np):
+    print(f"цикл:   {t_loop*1000:10.2f} мс")
+    print(f"NumPy:  {t_np*1000:10.2f} мс")
+    print(f"ускорение: {t_loop / t_np:.1f}×")
+
+
 # Задание 1
 print("\nЗадание 1")
 
@@ -569,3 +594,4 @@ print("корреляционная матрица:")
 print(np.round(step5_numpy(norm_np), 4))
 print("цикл и NumPy дали одинаковую корреляцию:",
       np.allclose(np.array(step5_loop(norm_np.tolist())), step5_numpy(norm_np)))
+
